@@ -8,8 +8,9 @@
     body { font-family: Arial, sans-serif; margin: 20px; }
     textarea, #result { width: 100%; }
     textarea { height: 150px; margin-bottom: 10px; }
-    button { padding: 10px 20px; cursor: pointer; margin: 5px 0; }
+    button { padding: 10px 20px; cursor: pointer; margin: 5px 5px 5px 0; }
     #result { margin-top: 20px; padding: 10px; border: 1px solid #ccc; white-space: pre-wrap; }
+    #copyMsg { color: green; margin-left: 10px; font-size: 0.9em; display: none; }
   </style>
 </head>
 <body>
@@ -25,6 +26,8 @@
 
   <h3>Résultat :</h3>
   <div id="result"></div>
+  <button onclick="copyResult()">Copier le résultat</button>
+  <span id="copyMsg">✅ Copié !</span>
 
   <script>
     function cleanAndFormatName(line) {
@@ -92,6 +95,20 @@
           names = [...new Set(names)]; // Supprimer doublons
           document.getElementById("result").textContent = names.join(" ; ");
         }
+      });
+    }
+
+    function copyResult() {
+      const result = document.getElementById("result").textContent;
+      if (!result) {
+        alert("Rien à copier !");
+        return;
+      }
+
+      navigator.clipboard.writeText(result).then(() => {
+        const msg = document.getElementById("copyMsg");
+        msg.style.display = "inline";
+        setTimeout(() => msg.style.display = "none", 2000);
       });
     }
   </script>
